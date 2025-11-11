@@ -2,38 +2,35 @@
 import Head from "next/head";
 import Script from "next/script";
 import SwaggerUI from "swagger-ui-react";
-import "swagger-ui-react/swagger-ui.css"; // Baris ini memuat tema original
+import "swagger-ui-react/swagger-ui.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
-// Import 'useEffect' dan 'Inter' tidak lagi diperlukan
-// import { Inter } from "next/font/google";
-// import { useEffect } from "react";
+import { Inter } from "next/font/google";
+// 'useEffect' sudah tidak diperlukan lagi, jadi bisa dihapus dari import
+// import { useEffect } from "react"; 
 
-// const inter = Inter({ subsets: ["latin"] }); // Tidak lagi diperlukan
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const swaggerUIConfig = {
     defaultModelRendering: "model",
-    docExpansion: "none",
+    docExpansion: "none", // Dikembalikan ke 'none' seperti kode original Anda
   };
 
-  // Seluruh hook useEffect yang berisi CSS kustom telah dihapus.
+  /*
+    BLOK 'useEffect' YANG BERISI CSS KUSTOM
+    TELAH DIHAPUS DARI SINI
+  */
 
   return (
     <>
       <Head>
         <title>VelynAPI Documentation</title>
         <meta name="title" content="VelynAPI - Documentation" />
-        <meta
-          name="description"
-          content="VelynAPI is a free, simple REST API for everyone. Enjoy using it without any cost!"
-        />
+        <meta name="description" content="VelynAPI is a free, simple REST API for everyone. Enjoy using it without any cost!" />
         <meta property="og:title" content="VelynAPI - Documentation" />
-        <meta
-          property="og:description"
-          content="VelynAPI is a free, simple REST API for everyone."
-        />
+        <meta property="og:description" content="VelynAPI is a free, simple REST API for everyone." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -51,17 +48,19 @@ export default function Home() {
         }}
       />
 
-      {/* Class 'p-6' dan 'inter.className' dihapus dari <main>
-        Class 'bg-white shadow-md rounded-lg p-4' dihapus dari <div>
-        agar tema original Swagger mengambil alih sepenuhnya.
-      */}
-      <main>
+      <main className={`p-6 ${inter.className}`}>
         <Analytics />
         <SpeedInsights />
-        <div>
+        {/*
+          Container ini sudah responsif (mobile & desktop) 
+          karena menggunakan Tailwind class (p-6)
+        */}
+        <div className="bg-white shadow-md rounded-lg p-4">
           <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
         </div>
       </main>
     </>
   );
 }
+
+
