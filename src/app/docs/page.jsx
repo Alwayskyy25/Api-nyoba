@@ -14,16 +14,25 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const swaggerUIConfig = {
     defaultModelRendering: "model",
-    docExpansion: "list", // Diubah dari "none" ke "list" agar section terbuka
+    docExpansion: "list",
   };
 
   // useEffect ini berisi style kustom untuk tema PUTIH
   // dan tata letak RATA KIRI, persis seperti di foto.
   useEffect(() => {
+    // === PERUBAHAN ===
+    // Menambahkan kelas font Inter langsung ke tag <body>
+    // agar font tetap berfungsi setelah <main> dihapus.
+    document.body.classList.add(inter.className);
+    // === Akhir Perubahan ===
+
     const style = document.createElement("style");
     style.innerHTML = `
       body {
         background-color: #ffffff !important;
+        /* Font-family sekarang juga diatur oleh 'inter.className' di body,
+          tapi ini tetap sebagai fallback yang baik.
+        */
         font-family: 'Inter', sans-serif;
       }
 
@@ -121,10 +130,13 @@ export default function Home() {
       }
     `;
     document.head.appendChild(style);
+    
     return () => {
+      // Cleanup saat komponen di-unmount
       document.head.removeChild(style);
+      document.body.classList.remove(inter.className);
     };
-  }, []);
+  }, []); // dependensi kosong agar useEffect hanya berjalan sekali
 
   return (
     <>
@@ -151,19 +163,16 @@ export default function Home() {
         }}
       />
 
-      <main className={`p-6 ${inter.className}`}>
-        <Analytics />
-        <SpeedInsights />
-        {/*
-          Container ini sudah responsif (mobile & desktop) 
-          karena menggunakan Tailwind class (p-6)
-        */}
-        <div className="bg-white shadow-md rounded-lg p-4">
-          <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
-        </div>
-      </main>
+      {/* Analytics & Speed Insights tetap di sini */}
+      <Analytics />
+      <SpeedInsights />
+
+      {/* === PERUBAHAN ===
+        Tag <main> dan <div> pembungkus telah dihapus.
+        Sekarang SwaggerUI akan langsung dirender memenuhi halaman.
+      */}
+      <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
+      {/* === Akhir Perubahan === */}
     </>
   );
 }
-
-
