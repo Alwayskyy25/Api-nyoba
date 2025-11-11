@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const swaggerUIConfig = {
     defaultModelRendering: "model",
-    docExpansion: "none", 
+    docExpansion: "list", // Diubah dari "none" ke "list" agar section terbuka
   };
 
   useEffect(() => {
@@ -25,8 +25,10 @@ export default function Home() {
         font-family: 'Inter', sans-serif;
       }
 
+      /* === PERUBAHAN DI SINI === */
+      /* Judul dan info disetel ke rata kiri agar sesuai dengan foto */
       .swagger-ui .info {
-        text-align: center;
+        text-align: left; 
         margin-bottom: 20px;
       }
 
@@ -81,17 +83,27 @@ export default function Home() {
         padding: 6px 12px;
         min-width: 60px;
         text-align: center;
+        color: white; /* Pastikan semua teks metode berwarna putih */
       }
 
       .swagger-ui .opblock-summary-method-get {
         background-color: #007bff;
-        color: white;
       }
 
       .swagger-ui .opblock-summary-method-post {
         background-color: #28a745;
-        color: white;
       }
+
+      /* === TAMBAHAN CSS === */
+      /* Menambahkan style untuk PUT dan DELETE agar sesuai foto */
+      .swagger-ui .opblock-summary-method-put {
+        background-color: #ffc107; /* Oranye/Kuning */
+      }
+
+      .swagger-ui .opblock-summary-method-delete {
+        background-color: #dc3545; /* Merah */
+      }
+      /* === Akhir Tambahan === */
 
       .swagger-ui .opblock-summary-path {
         font-size: 14px;
@@ -136,6 +148,10 @@ export default function Home() {
       <main className={`p-6 ${inter.className}`}>
         <Analytics />
         <SpeedInsights />
+        {/*
+          Container ini sudah responsif (mobile & desktop) 
+          karena menggunakan Tailwind class (p-6)
+        */}
         <div className="bg-white shadow-md rounded-lg p-4">
           <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
         </div>
@@ -143,3 +159,4 @@ export default function Home() {
     </>
   );
 }
+
