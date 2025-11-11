@@ -7,7 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
 import { Inter } from "next/font/google";
-import { useEffect } from "react";
+import { useEffect } in "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,36 +17,37 @@ export default function Home() {
     docExpansion: "list",
   };
 
-  // useEffect ini berisi style kustom untuk tema PUTIH
-  // dan tata letak RATA KIRI, persis seperti di foto.
   useEffect(() => {
-    // === PERUBAHAN ===
-    // Menambahkan kelas font Inter langsung ke tag <body>
-    // agar font tetap berfungsi setelah <main> dihapus.
     document.body.classList.add(inter.className);
-    // === Akhir Perubahan ===
 
     const style = document.createElement("style");
     style.innerHTML = `
-      body {
-        background-color: #ffffff !important;
-        /* Font-family sekarang juga diatur oleh 'inter.className' di body,
-          tapi ini tetap sebagai fallback yang baik.
-        */
+      /* === TAMBAHAN UNTUK FULL LAYAR === */
+      /* Menghapus margin/padding bawaan browser */
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #ffffff !important; /* Pastikan background putih */
         font-family: 'Inter', sans-serif;
       }
 
-      /* === TAMBAHAN === */
-      /* Ini untuk menyembunyikan 'top bar' hitam default dari Swagger */
+      /* Menghapus padding/margin internal dari Swagger UI */
+      .swagger-ui .wrapper {
+        padding: 0;
+        margin: 0;
+        max-width: 100%; /* Pastikan tidak ada batas lebar maks */
+      }
+
+      /* Menyesuaikan container info agar tetap ada sedikit jarak */
+      .swagger-ui .info {
+        padding: 10px 20px; /* Memberi sedikit padding HANYA di bagian info */
+        text-align: left;
+        margin-bottom: 20px;
+      }
+      /* === Akhir Tambahan Full Layar === */
+      
       .swagger-ui .topbar {
         display: none;
-      }
-      /* === Akhir Tambahan === */
-
-      /* Judul dan info disetel ke rata kiri agar sesuai dengan foto */
-      .swagger-ui .info {
-        text-align: left; 
-        margin-bottom: 20px;
       }
 
       .swagger-ui .info h1 {
@@ -66,10 +67,21 @@ export default function Home() {
         text-decoration: none;
       }
 
+      /* === TAMBAHAN: Memberi padding pada section API === */
+      /* Ini agar endpoint tidak menempel ke tepi layar */
+      .swagger-ui .opblock, .swagger-ui .models-container {
+        margin: 0 10px 10px 10px; /* Atas, Kanan, Bawah, Kiri */
+      }
+
+      /* Mengatur opblock tag (judul section) agar punya padding */
+      .swagger-ui .opblock-tag-section .opblock-tag {
+        padding: 10px 20px; 
+      }
+      /* === Akhir Tambahan === */
+
       .swagger-ui .opblock {
         border-radius: 8px;
         border: 1px solid #ddd;
-        margin-bottom: 10px;
         transition: all 0.3s ease-in-out;
       }
 
@@ -82,7 +94,6 @@ export default function Home() {
         font-weight: bold;
         color: #333;
         margin-bottom: 5px;
-        padding-left: 10px;
       }
 
       .swagger-ui .opblock-summary {
@@ -100,7 +111,7 @@ export default function Home() {
         padding: 6px 12px;
         min-width: 60px;
         text-align: center;
-        color: white; /* Pastikan semua teks metode berwarna putih */
+        color: white;
       }
 
       .swagger-ui .opblock-summary-method-get {
@@ -111,13 +122,12 @@ export default function Home() {
         background-color: #28a745;
       }
 
-      /* Menambahkan style untuk PUT dan DELETE agar sesuai foto */
       .swagger-ui .opblock-summary-method-put {
-        background-color: #ffc107; /* Oranye/Kuning */
+        background-color: #ffc107;
       }
 
       .swagger-ui .opblock-summary-method-delete {
-        background-color: #dc3545; /* Merah */
+        background-color: #dc3545;
       }
 
       .swagger-ui .opblock-summary-path {
@@ -132,11 +142,10 @@ export default function Home() {
     document.head.appendChild(style);
     
     return () => {
-      // Cleanup saat komponen di-unmount
       document.head.removeChild(style);
       document.body.classList.remove(inter.className);
     };
-  }, []); // dependensi kosong agar useEffect hanya berjalan sekali
+  }, []);
 
   return (
     <>
@@ -163,16 +172,11 @@ export default function Home() {
         }}
       />
 
-      {/* Analytics & Speed Insights tetap di sini */}
       <Analytics />
       <SpeedInsights />
 
-      {/* === PERUBAHAN ===
-        Tag <main> dan <div> pembungkus telah dihapus.
-        Sekarang SwaggerUI akan langsung dirender memenuhi halaman.
-      */}
+      {/* Halaman ini sekarang akan full layar */}
       <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
-      {/* === Akhir Perubahan === */}
     </>
   );
 }
