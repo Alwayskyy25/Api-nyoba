@@ -7,118 +7,21 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
 import { Inter } from "next/font/google";
-import { useEffect } from "react";
+// 'useEffect' sudah tidak diperlukan lagi, jadi bisa dihapus dari import
+// import { useEffect } from "react"; 
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const swaggerUIConfig = {
     defaultModelRendering: "model",
-    docExpansion: "list", // Diubah dari "none" ke "list" agar section terbuka
+    docExpansion: "none", // Dikembalikan ke 'none' seperti kode original Anda
   };
 
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.innerHTML = `
-      body {
-        background-color: #ffffff !important;
-        font-family: 'Inter', sans-serif;
-      }
-
-      /* === PERUBAHAN DI SINI === */
-      /* Judul dan info disetel ke rata kiri agar sesuai dengan foto */
-      .swagger-ui .info {
-        text-align: left; 
-        margin-bottom: 20px;
-      }
-
-      .swagger-ui .info h1 {
-        font-size: 26px;
-        font-weight: bold;
-        color: #222;
-      }
-
-      .swagger-ui .info p {
-        font-size: 14px;
-        color: #555;
-      }
-
-      .swagger-ui .info a {
-        color: #007bff;
-        font-weight: bold;
-        text-decoration: none;
-      }
-
-      .swagger-ui .opblock {
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        transition: all 0.3s ease-in-out;
-      }
-
-      .swagger-ui .opblock:hover {
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .swagger-ui .opblock-tag {
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 5px;
-        padding-left: 10px;
-      }
-
-      .swagger-ui .opblock-summary {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        font-weight: bold;
-      }
-
-      .swagger-ui .opblock-summary-method {
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: bold;
-        padding: 6px 12px;
-        min-width: 60px;
-        text-align: center;
-        color: white; /* Pastikan semua teks metode berwarna putih */
-      }
-
-      .swagger-ui .opblock-summary-method-get {
-        background-color: #007bff;
-      }
-
-      .swagger-ui .opblock-summary-method-post {
-        background-color: #28a745;
-      }
-
-      /* === TAMBAHAN CSS === */
-      /* Menambahkan style untuk PUT dan DELETE agar sesuai foto */
-      .swagger-ui .opblock-summary-method-put {
-        background-color: #ffc107; /* Oranye/Kuning */
-      }
-
-      .swagger-ui .opblock-summary-method-delete {
-        background-color: #dc3545; /* Merah */
-      }
-      /* === Akhir Tambahan === */
-
-      .swagger-ui .opblock-summary-path {
-        font-size: 14px;
-        color: #222;
-      }
-
-      .swagger-ui .opblock-summary-control {
-        margin-left: auto;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
+  /*
+    BLOK 'useEffect' YANG BERISI CSS KUSTOM
+    TELAH DIHAPUS DARI SINI
+  */
 
   return (
     <>
@@ -159,4 +62,5 @@ export default function Home() {
     </>
   );
 }
+
 
