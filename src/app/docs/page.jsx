@@ -7,47 +7,37 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
 import { Inter } from "next/font/google";
-import { useEffect } in "react";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const swaggerUIConfig = {
     defaultModelRendering: "model",
-    docExpansion: "list",
+    docExpansion: "list", // Diubah dari "none" ke "list" agar section terbuka
   };
 
+  // useEffect ini berisi style kustom untuk tema PUTIH
+  // dan tata letak RATA KIRI, persis seperti di foto.
   useEffect(() => {
-    document.body.classList.add(inter.className);
-
     const style = document.createElement("style");
     style.innerHTML = `
-      /* === TAMBAHAN UNTUK FULL LAYAR === */
-      /* Menghapus margin/padding bawaan browser */
-      html, body {
-        margin: 0 !important;
-        padding: 0 !important;
-        background-color: #ffffff !important; /* Pastikan background putih */
+      body {
+        background-color: #ffffff !important;
         font-family: 'Inter', sans-serif;
       }
 
-      /* Menghapus padding/margin internal dari Swagger UI */
-      .swagger-ui .wrapper {
-        padding: 0;
-        margin: 0;
-        max-width: 100%; /* Pastikan tidak ada batas lebar maks */
-      }
-
-      /* Menyesuaikan container info agar tetap ada sedikit jarak */
-      .swagger-ui .info {
-        padding: 10px 20px; /* Memberi sedikit padding HANYA di bagian info */
-        text-align: left;
-        margin-bottom: 20px;
-      }
-      /* === Akhir Tambahan Full Layar === */
-      
+      /* === INI BAGIAN YANG ANDA MINTA === */
+      /* Ini untuk menyembunyikan 'top bar' hitam default dari Swagger */
       .swagger-ui .topbar {
         display: none;
+      }
+      /* === Akhir Bagian === */
+
+      /* Judul dan info disetel ke rata kiri agar sesuai dengan foto */
+      .swagger-ui .info {
+        text-align: left; 
+        margin-bottom: 20px;
       }
 
       .swagger-ui .info h1 {
@@ -67,21 +57,10 @@ export default function Home() {
         text-decoration: none;
       }
 
-      /* === TAMBAHAN: Memberi padding pada section API === */
-      /* Ini agar endpoint tidak menempel ke tepi layar */
-      .swagger-ui .opblock, .swagger-ui .models-container {
-        margin: 0 10px 10px 10px; /* Atas, Kanan, Bawah, Kiri */
-      }
-
-      /* Mengatur opblock tag (judul section) agar punya padding */
-      .swagger-ui .opblock-tag-section .opblock-tag {
-        padding: 10px 20px; 
-      }
-      /* === Akhir Tambahan === */
-
       .swagger-ui .opblock {
         border-radius: 8px;
         border: 1px solid #ddd;
+        margin-bottom: 10px;
         transition: all 0.3s ease-in-out;
       }
 
@@ -94,6 +73,7 @@ export default function Home() {
         font-weight: bold;
         color: #333;
         margin-bottom: 5px;
+        padding-left: 10px;
       }
 
       .swagger-ui .opblock-summary {
@@ -111,7 +91,7 @@ export default function Home() {
         padding: 6px 12px;
         min-width: 60px;
         text-align: center;
-        color: white;
+        color: white; /* Pastikan semua teks metode berwarna putih */
       }
 
       .swagger-ui .opblock-summary-method-get {
@@ -122,12 +102,13 @@ export default function Home() {
         background-color: #28a745;
       }
 
+      /* Menambahkan style untuk PUT dan DELETE agar sesuai foto */
       .swagger-ui .opblock-summary-method-put {
-        background-color: #ffc107;
+        background-color: #ffc107; /* Oranye/Kuning */
       }
 
       .swagger-ui .opblock-summary-method-delete {
-        background-color: #dc3545;
+        background-color: #dc3545; /* Merah */
       }
 
       .swagger-ui .opblock-summary-path {
@@ -140,10 +121,8 @@ export default function Home() {
       }
     `;
     document.head.appendChild(style);
-    
     return () => {
       document.head.removeChild(style);
-      document.body.classList.remove(inter.className);
     };
   }, []);
 
@@ -172,11 +151,18 @@ export default function Home() {
         }}
       />
 
-      <Analytics />
-      <SpeedInsights />
-
-      {/* Halaman ini sekarang akan full layar */}
-      <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
+      <main className={`p-6 ${inter.className}`}>
+        <Analytics />
+        <SpeedInsights />
+        {/*
+          Container ini sudah responsif (mobile & desktop) 
+          karena menggunakan Tailwind class (p-6)
+        */}
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
+        </div>
+      </main>
     </>
   );
 }
+
